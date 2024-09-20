@@ -693,7 +693,7 @@ label start:
 
     scene bg city with fade
 
-    "TV" "...witness claims that the suspect wore something resembling our very own Guardian Angel of Love. Could this 'Shadow Angel' be connected to the town's heroine? Up next…"
+    "TV" "...witness claims that the suspect wore something resembling our very own Guardian Angel of Love. Could this \"Shadow Angel\" be connected to the town's heroine? Up next…"
 
     show cordis at leftish with dissolve
 
