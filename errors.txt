@@ -2,9 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/screens.rpy", line 360: add expects a non-empty block.
-    add gui.main_menu_background:
-                                 ^
+File "game/script.rpy", line 1206: end of line expected.
+    show karen angry at rightishwith moveinright
+                                     ^
 
 Ren'Py Version: Ren'Py 8.1.1.23060707
-Thu Sep  5 16:37:33 2024
+Sat Aug 23 15:20:36 2025

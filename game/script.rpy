@@ -410,7 +410,11 @@ label start:
 
     "Rich Dude" "Yeah, yeah! Man she had such a big-"
 
+    hide thomas with dissolve
+
     "That's it. That's it. I can't listen to this anymore. I turn to get the heck away from the table, only to bump into someone and hit the ground."
+
+    show karen angry at middling  with moveinleft
 
     "Karen" "WATCH IT!" with hpunch
 
@@ -422,7 +426,7 @@ label start:
 
     "Karen" "Do you know much this dress costs?! More than your entire salary!"
 
-    show boss angry at middling with moveinleft
+    show boss angry at leftish with moveinleft
 
     "Boss" "What is going on here?!"
 
@@ -454,6 +458,8 @@ label start:
 
     "Rich Dudes" "Oooooh."
 
+    show karen humph
+
     "Karen" "Hmph!"
 
     "No, no, no. This can't be happening."
@@ -461,7 +467,6 @@ label start:
     "I need to get out of here before I completely break down."
 
     scene bg city with fade
-
 
     "Should I call Cody? No, it's too late in the evening for that. I guess I'll just call a taxi."
 
@@ -1075,7 +1080,6 @@ label episodeTwo:
 
     ami "...Nadine? Is something wrong?"
 
-
     n shocked "What?"
 
     n customerservice "What?{fast} No. Of course not!"
@@ -1120,7 +1124,6 @@ label episodeTwo:
 
     n relief "Right, right."
 
-
     menu:
         "Great. She looks hurt. I should say something."
         "Apologize":
@@ -1152,7 +1155,7 @@ label episodeTwo:
 
     "{i}Of course{/i}, one of the trust fund boys barges out right then and there."
 
-    show ricky annoyed at rightish with dissolve
+    # show ricky annoyed at rightish with dissolve
 
     "Ricky" "The nerve of those detectives, asking me if I would steal. Ugh, I need a cigarette-"
 
@@ -1170,7 +1173,7 @@ label episodeTwo:
 
     "I shut my eyes as tight as I can. That's it. My life is over. I'm going to jail."
 
-    show ricky flirty at rightish with dissolve
+    # show ricky flirty at rightish with dissolve
 
     "Ricky" "What's a babe like you doing in a place like this?"
 
@@ -1194,9 +1197,13 @@ label episodeTwo:
 
     "Before Amia can answer, I get pushed over."
 
-    show ricky annoyed at rightish
+    show karen angry at rightish with moveinright
 
-    show amia shocked
+    # show ricky annoyed at middling
+
+    show amia shocked at leftish
+
+    with move
 
     "Karen" "Out of my way!" with hpunch
 
@@ -1218,11 +1225,15 @@ label episodeTwo:
 
     n sad street "It's fine! I'm okay!"
 
+    show karen
+
     "The woman's looking at me. She's going to recognize me and I'm going to go to jail and-"
 
     show amia angry
 
     ami "You should apologize."
+
+    show karen humph
 
     "Karen" "Well, I told her to move."
 
@@ -1237,6 +1248,8 @@ label episodeTwo:
     show amia angry
 
     ami "..."
+
+    # show ricky flirty
 
     "Ricky" "Woo! I like em fiesty! You know, there's a fancy dinner next week at-"
 
