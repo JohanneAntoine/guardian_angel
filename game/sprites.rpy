@@ -161,6 +161,8 @@ label define_sprites:
         group outfits:
             attribute casual:
                 "characters/cody/cody_clothes.png"
+            attribute uniform:
+                "characters/cody/cody_uniform.png"
             
 
         

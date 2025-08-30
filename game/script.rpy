@@ -1897,7 +1897,7 @@ label hangup:
 
     shadow "Hello-?"
 
-    show cody casual at middling with dissolve
+    show cody uniform at middling with dissolve
 
     shadow shocked "URK-!"
 
