@@ -894,7 +894,7 @@ label episodeTwo:
 
     "Tommy" "Oh, brother…" 
 
-    show zuri glasses uniform at farleftish with dissolve:
+    show zuri glasses uniform at farleftish with dissolve
 
     zuri "So tell us the details! Who, what, where, when and why?"
 
