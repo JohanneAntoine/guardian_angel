@@ -3,6 +3,7 @@
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
 
+
 init python:
     wickedPoints = 0
 
@@ -54,33 +55,65 @@ transform farrightish:
 transform slide_left:
     ease 0.2 xoffset 20
 
+#colors
+define amia_color = "#FF1493"
 
 #characters
 define n = Character("Nadine", color="#c7a8fc", image="nadine")
 define shadow = Character("Nadine", color="#c7a8fc", image="shadowangel")
-define c = Character("Cody", color="#ecce0a")
-define mocha = Character("Mocha", color="#A0522D")
-define ami = Character("Amia", color="#FF1493")
+define c = Character("Cody", color="#ecce0a", callback = name_callback, cb_name = "cody")
+define mocha = Character("Mocha", color="#A0522D", callback = name_callback, cb_name = "mocha")
+define ami = Character("Amia", color=amia_color, callback = name_callback, cb_name = "amia")
 define familiar = Character("???", color="#FFFFFF")
-define cordis = Character("Cordis", color="#f677b2")
-define angel = Character("Angel", color="#FF1493")
-define xavier = Character("Xavier", color="#950e0e")
-define yvette = Character("Yvette", color="#ffaa00")
-define zuri = Character("Zuri", color="#1414c8")
+define cordis = Character("Cordis", color="#f677b2", callback = name_callback, cb_name = "cordis")
+define angel = Character("Angel", color=amia_color, callback = name_callback, cb_name = "angel")
+define xavier = Character("Xavier", color="#950e0e", callback = name_callback, cb_name = "xavier")
+define yvette = Character("Yvette", color="#ffaa00", callback = name_callback, cb_name = "yvette")
+define zuri = Character("Zuri", color="#3e3ef3", callback = name_callback, cb_name = "zuri")
+define liv = Character("Livia", color="#079007", callback = name_callback, cb_name = "livia")
 
 
+#Images
+image transformed = "images/backgrounds/cgs/bg transformed.png"
+image newlook = "images/backgrounds/cgs/bg new_look.png"
+image thumb_locked = "images/locked-safe.png"
+image detectives = "images/backgrounds/cgs/bg xyz.png"
+image pink = "#f677b2"
 
 
 image shadow:
     "side shadowangel.png"
 
+
+
 image investigators = ParameterizedText(xalign=0.5, yalign=0.0)
+
+image smokebomb = SnowBlossom("images/smokebomb.png",
+    count=30, border=1000,
+    xspeed=(-20,20), yspeed=(-300, 400),
+    start=0.2, horizontal=False)
 
 define flash = Fade(.25, 0.0, .75, color="#fff")
 
 init:
     call define_sprites from _call_define_sprites
 
+
+default persistent.unlock_1 = False
+default persistent.unlock_2 = False
+default persistent.unlock_3 = False
+
+
+default character1affection = 60 #These are where the bar starts. If you make more bars, you need more of these too!
+default character2affection = 50
+default character3affection = 40
+
+default maxpoints = 100 #This is the highest points a character can have. Think of the bars like ratios, if you start at 50 then your bar is 50/100 (or 50%) full! This line here changes the 100.
+
+default character1 = "Cody" #Replace the part in quotes with your character's name. If you don't see it update live, restart the game!
+default character2= "Amia"
+default character3 = "???"
+default notevariable= "Note 1"
 # The game starts here.
 
 
@@ -90,14 +123,18 @@ label start:
     # add a file (named either "bg room.png" or "bg room.jpg") to the
     # images directory to show it.
 
+    scene bg newsroom with fade
+
+    show livia happy uniform at middling with dissolve
+    
+    liv "Welcome to Daybreaker News! I'm your host, Livia Porter! A near-disaster has thankfully been averted thanks to our very own Guardian Angel of Love!"
+    
+    liv "For nearly 10 years, our town's shining angel has been saving this town from constant..."
+
     scene bg cafe
 
-    # These display lines of dialogue.
-    "TV" "Welcome to Daybreaker News! I'm your host, Livia Porter! A near-disaster has thankfully been averted thanks to our very own Guardian Angel of Love!"
-    
-    "TV" "For nearly 10 years, our town's shining angel has been saving this town from constant..."
-
     play music "music/CoffeeShopThemeMagicalGirl.wav" fadein 1.0
+
 
     "Random Person" "Did you see the Guardian Angel of Love's interview today?"
 
@@ -109,6 +146,8 @@ label start:
 
     show cody casual at middling with dissolve
 
+    show screen button
+
     c "Hey, you."
 
     n happy uniform "Hey yourself."
@@ -119,15 +158,15 @@ label start:
 
     show cody sympathetic with dissolve
 
-    c "Well at least you have that busing job to pay off those student bills for now." 
+    # c "Well at least you have that busing job to pay off those student bills for now." 
     
-    "I groan more loudly."  
+    # "I groan more loudly."  
 
-    "Cody ignores that and continues."
+    # "Cody ignores that and continues."
 
-    c "By the way, don't you have that fancy gala tomorrow?"
+    c "Okay then. How's your current job?"
 
-    "I groan even more loudly."
+    "I groan again."
 
     n tired "My boss has been crazy all month about it."
 
@@ -145,13 +184,19 @@ label start:
     
     scene bg hotel with fade
 
+    "Right on time."
+
     show boss angry at middling with dissolve
+
+    "Mr. Deerg is on his phone, so maybe I can sneak by-"
+
+    "Boss" "I don't give a d*mn if your dad's sick! Get back to work!"
     
     "Boss" "Bunker! You're late!"
 
-    n uniform  "I'm sorry, sir."
+    n uniform  "I was here the whole tim-"
 
-    "By ten whole seconds."
+    "Boss" "Don't talk back to me!"
 
     show boss neutral
 
@@ -253,7 +298,7 @@ label start:
 
     show amia smile at middling with dissolve
 
-    ami "Oh, hi, Nadine!"
+    ami "Oh, hi, Nadine! I didn't see you there!"
 
     "Amia's Date" "Who's this chick?"
 
@@ -516,7 +561,7 @@ label start:
 
     "This interviewer's reading my mind, but I don't even know what their name is. What should I say?"
 
-    menu optional_name:
+    menu:
         "'I guess...'":
             "I don't know. Maybe I was just too tired. Maybe it was the stress of losing my job, but I find myself saying-"
 
@@ -540,6 +585,9 @@ label start:
     n transformation -stained "Sh-shadow form, activate!"
 
     scene bg transformed with flash
+
+    if persistent.unlock_1 == False:
+        $ persistent.unlock_1 = True
 
     "What is this? Where did this costume come from?! Where's my phone?!"
 
@@ -677,6 +725,7 @@ label start:
         "No time to second guess myself. I locate the smoke bomb, a small, white ball, and throw it..."
         "On the ground":
             $ wickedPoints -= 1
+            show screen smoke_bomb
             "Becky" "I can't see!"
 
             shadow cautious "Sorry!"
@@ -693,6 +742,8 @@ label start:
         
 
     "While the room's covered in smoke, I jump out a window into the night."
+
+    hide screen smoke_bomb
 
     scene black with fade
 
@@ -784,9 +835,13 @@ label start:
 
     centered "Meanwhile..."
 
-    scene bg city with fade
+    scene bg newsroom with fade
 
-    "TV" "...witness claims that the suspect wore something resembling our very own Guardian Angel of Love. Could this \"Shadow Angel\" be connected to the town's heroine? Up next…"
+    show livia uniform at middling with dissolve
+
+    liv "...witness claims that the suspect wore something resembling our very own Guardian Angel of Love. Could this \"Shadow Angel\" be connected to the town's heroine? Up next…"
+
+    scene bg city with fade
 
     show cordis at leftish with dissolve
 
@@ -874,6 +929,9 @@ label episodeTwo:
 
     $ renpy.pause(3, hard=False)
 
+    if persistent.unlock_2 == False:
+        $ persistent.unlock_2 = True
+
     scene bg hotel
 
     show becky confused at leftish
@@ -888,7 +946,7 @@ label episodeTwo:
 
     show becky at middling with move
 
-    show xavier uniform at leftish with moveinleft
+    show xavier outraged uniform at leftish with moveinleft
 
     xavier "Justice never rests when thievery's around!"
 
@@ -1104,6 +1162,9 @@ label episodeTwo:
 
     scene bg new_look with fade
 
+    if persistent.unlock_3 == False:
+        $ persistent.unlock_3 = True
+
     "..."
 
     "...not bad."
@@ -1142,6 +1203,8 @@ label episodeTwo:
         "Compliment her back":
 
             n -relief "Um, thanks. You look nice too."
+
+            $ character2affection += 5
 
             show amia smile at middling with dissolve
 
@@ -1235,7 +1298,7 @@ label episodeTwo:
 
     show karen humph
 
-    "Karen" "Well, I told her to move."
+    "Karen" "I didn't see her there."
 
     show amia shouting
 
@@ -1271,6 +1334,8 @@ label episodeTwo:
         "It's fine.":
 
             $ amiaSweet = True
+
+            $ character2affection += 10
 
             n relief street "Yeah, I'm okay. Um, thanks for sticking up for me."
 
@@ -1401,9 +1466,9 @@ label episodeTwo:
 
     scene bg hotel_sunset with fade
 
-    show xavier confident uniform at middling with dissolve
+    show yvette neutral uniform at rightish with dissolve
 
-    show yvette uniform at rightish with dissolve
+    show xavier confident uniform at middling with dissolve
 
     xavier "Ah, Inspector Z!"
 
@@ -1412,6 +1477,8 @@ label episodeTwo:
     show zuri thinking uniform at leftish with dissolve
 
     zuri "Did you find any more clues?"
+
+    show yvette thinking uniform at rightish with dissolve
 
     yvette "Not yet."
 
@@ -1514,6 +1581,10 @@ label episodeTwo:
             
             shadow confident "Sorry, I guess I was distracted by the…{i}fine man{/i} in front of me."
 
+            $ character3affection += 10
+
+            $ character3 = "Xavier"
+
             show zuri outraged
 
             show yvette outraged
@@ -1543,6 +1614,7 @@ label episodeTwo:
             jump escape
 
 label escape:
+    show screen smoke_bomb
 
     show yvette outraged uniform
 
@@ -1570,9 +1642,13 @@ label escape:
 
     "Suddenly, I feel myself lifting out of the darkness."
 
+    scene bg nadineyvette with fade
+
     "I look down and see that I look just like the detective!"
 
     xavier "Let's split up! She could be anywhere!"
+
+    hide screen smoke_bomb
 
     if fire:
 
@@ -1696,6 +1772,8 @@ label episodeThree:
     menu:
         "What does that mean?":
 
+            $ character1affection += 10
+
             $ codySweet = True
             n deadpan "Are you saying I'm not model material?"
 
@@ -1816,6 +1894,8 @@ label episodeThree:
 
             "\"Cute?\"":
 
+                $ character2affection += 5
+
                 n embarrassed "You really think so?" 
 
                 if codySweet == True:
@@ -1863,9 +1943,13 @@ label hangup:
 
     "When a drunk girl dressed as a honeybee opens the door."
 
+    show bumblebee confused bee at middling with dissolve
+
     "Tipsy Girl" "Hey-hey you! Are you here for the costume party?"
 
     shadow uhoh "What? I mean yes!"
+
+    show bumblebee happy bee at middling with dissolve
 
     "Tipsy Girl" "Oh, come on inside, the party's just gettin' stahted!"
 
@@ -2113,8 +2197,6 @@ label cody_confrontation:
 
     n uncertain "He didn't have a gold neckla-"
 
-    show cody sympathetic
-
     n shocked "..."
 
     "I grab his arm and pull him outside the cafe."
@@ -2169,33 +2251,91 @@ label cody_confrontation:
 
     "It {i}is{/i} hard running from place to place."
 
-    c "It'll be a perfect cover. I'll do my \"deliveries\" while you go do your stuff."
+    c "It'll be a perfect cover. I'll do my \"deliveries\" while you go do your stuff. Plus, pizza delivery doesn't pay that well."
 
-    n relief "You're really okay with this?"
+    c "Speaking of...when's the next heist?"
 
-    c "Nadine, I will {i}always{/i} be by your side. One hundred percent."
+    
 
-    show cody with dissolve
-
-    c "So...what's the next plan, chief?"
+    # c "So...what's the next plan, chief?"
 
     n "Well, I usually get messaged from-"
 
-    n sad "..."
+    play sound "<from 1.0 to 2.0>audio/sfx/21-sfx_ringtone.ogg"
+
+    n shocked "!"
+
+    "I check my phone. Sure enough, it's them. I glance around if there is anyone listening."
 
     c "Nadine?"
 
-    "I glance around if there is anyone listening."
+    n tired "You're about to find out."
 
-    n "I get a message from my \'employer\'."
+    "I pick up the phone."
 
-    c "Oh. Okay. I get it."
+    n "Hello?"
 
-    "Cody's watch starts beeping."
+    familiar "May I speak to the gentleman next to you?"
 
-    c "I gotta head out now, but I'll see you soon, alright?"
+    "Oh no."
 
-    n happy "Sure."
+    n "It's for you."
+
+    "Cody takes my cellphone and chats."
+
+    c "Hey, the name's Cody...Cody Metullus...M-E-T-U-L-L-U-S...Before you start, I wanna know..."
+
+    show cody annoyed
+
+    c "Hey, the name's Cody...Cody Metullus...M-E-T-U-L-L-U-S...Before you start, I wanna know...{fast}are you blackmailing her?"
+
+    show cody -annoyed
+
+    c "Hey, the name's Cody...Cody Metullus...M-E-T-U-L-L-U-S...Before you start, I wanna know...are you blackmailing her?{fast} Good to know..."
+
+    c "...Hm? I promise I won't blab..."
+
+    show cody shocked
+
+    c "..."
+
+    show cody annoyed
+
+    c "...{fast}No need to go {i}that{/i} far...Yes I can drive and pretend to do deliveries..."
+
+    show cody happy
+
+    c "...No need to go {i}that{/i} far...Yes I can drive and pretend to do deliveries...{fast}Glad to see we can come to an agreement!"
+
+    "Cody hangs up."
+
+    n sad "Well?"
+
+    c "Well they told be that I could be your getaway driver..."
+
+    show cody annoyed
+
+    c "Well they told be that I could be your getaway driver...{fast}and that they'll kill me if I tell anyone else."
+
+    n shocked "WHAT?!"
+
+    c "Hey, I wasn't going to tell anyone else anyways."
+
+    show cody happy
+
+    c "But on the bright side, you now have a getaway driver!"
+
+    n relief "You're really okay with this?"
+
+    show cody sympathetic with dissolve
+
+    c "Nadine, I will {i}always{/i} be by your side. One hundred percent."
+
+    # show cody with dissolve
+
+    # c "I gotta head out now, but I'll see you soon, alright?"
+
+    # n happy "Sure."
 
     menu :
         "Thank him":
@@ -2205,11 +2345,16 @@ label cody_confrontation:
             c "Hey, don't sweat it."
 
         "Hug him":
-            show cody smile with dissolve
+            scene bg nadine_cody_hug with fade 
 
+            "I give him a big squeeze."
 
+            $character1affection += 2
 
-            n happy "Yeah."
+            n happy "Thanks, Cody. This means a lot to me."
+
+            c "Aww, don't sweat it."
+
 
     scene black with fade
 
@@ -2247,73 +2392,92 @@ label cody_confrontation:
 
     mocha "Mrr..."
 
-    play sound "<from 1.0 to 2.0>audio/sfx/21-sfx_ringtone.ogg"
+    # play sound "<from 1.0 to 2.0>audio/sfx/21-sfx_ringtone.ogg"
 
-    n -happy "Huh?"
+    # n -happy "Huh?"
 
-    n "Hello?"
+    # n "Hello?"
 
-    familiar "Hello Nadine. How did last night's heist go?"
+    # familiar "Hello Nadine. How did last night's heist go?"
 
-    "I look down at Mocha for strength."
+    # "I look down at Mocha for strength."
 
-    hide mocha with dissolve
+    # hide mocha with dissolve
 
-    "Mocha prompty leaves the room."
+    # "Mocha prompty leaves the room."
 
-    "Traitor."
+    # "Traitor."
 
-    n uncertain "It went fine. I got the mark's wallet..."
+    # n uncertain "It went fine. I got the mark's wallet..."
 
-    familiar "Did you remember to cover your tracks?"
+    # familiar "Did you remember to cover your tracks?"
 
-    n sad "..."
+    # n sad "..."
 
-    familiar "Nadine?"
+    # familiar "Nadine?"
 
-    n uncertain "{i}Hypothetically{/i}, what would happen if someone were to find me out?"
+    # n uncertain "{i}Hypothetically{/i}, what would happen if someone were to find me out?"
 
-    familiar "Well, I would suggest checking if they told anyone else."
+    # familiar "Well, I would suggest checking if they told anyone else."
 
-    n uncertain "Right."
+    # n uncertain "Right."
 
-    familiar "And then eliminate them."
+    # familiar "And then eliminate them."
 
-    n shocked "WHAT?!"
+    # n shocked "WHAT?!"
 
-    familiar "But we're speaking in {i}hypotethicals{/i}, so there's no need."
+    # familiar "But we're speaking in {i}hypotethicals{/i}, so there's no need."
 
-    "Play it cool, Nadine. They don't know yet."
+    # "Play it cool, Nadine. They don't know yet."
 
-    n uncertain "Uh, what if they said they're willing to keep quiet and also help out?"
+    # n uncertain "Uh, what if they said they're willing to keep quiet and also help out?"
 
-    familiar "Is this truly a hypothetical scenario, Nadine?"
+    # familiar "Is this truly a hypothetical scenario, Nadine?"
 
-    "F*ck."
+    # "F*ck."
 
-    n tired "No."
+    # n tired "No."
 
-    familiar "{i}Nadine...{/i}"
+    # familiar "{i}Nadine...{/i}"
 
-    n sad "They can still help! They promised me that they wouldn't tell anyone!"
+    # n sad "They can still help! They promised me that they wouldn't tell anyone!"
 
-    familiar "You're a lot more trusting then I thought, Nadine."
+    # familiar "You're a lot more trusting then I thought, Nadine."
 
-    "Think, Nadine! How do I get them not to hurt Cody?"
+    # "Think, Nadine! How do I get them not to hurt Cody?"
 
-    n customerservice "What if I introduced you?"
+    # n customerservice "What if I introduced you?"
 
-    familiar "...Fine, but if they try to expose us, it won't end well."
+    # familiar "...Fine, but if they try to expose us, it won't end well."
 
-    n customerservice "How about tomorrow afternoon?"
+    # n customerservice "How about tomorrow afternoon?"
 
-    familiar "Very well. Tell them to meet at 6pm, sharp."
+    # familiar "Very well. Tell them to meet at 6pm, sharp. I will send you the address."
 
-    play sound "audio/sfx/17-sfx_callend.ogg"
+    # play sound "audio/sfx/17-sfx_callend.ogg"
 
-    "Oh, mercy. I feel sick."
+    # "Oh, mercy. I feel sick."
 
-    scene black with fade
+    # #jump meeting_the_familiar
+
+    # "Suddenly, I hear a knocking on the door."
+
+    # ami "Nadine?"
+
+    # n shocked "!"
+
+    # "Act natural, Nadine."
+
+    # n customerservice "Come in!"
+
+
+
+
+    
+
+    
+
+
 
     centered "Elsewhere..."
 
@@ -2346,6 +2510,16 @@ label cody_confrontation:
 
         zuri "Shut your mouth!"
 
+        show yvette thinking with dissolve
+
+        yvette "Fine! I guess you don't want to see the sketch I made!"
+
+        show screen facial_sketch with dissolve
+
+        yvette "See?"
+
+        hide screen facial_sketch
+
     "Boss" "Okay, that leaves me with one question-"
 
     show xavier thinking
@@ -2372,7 +2546,7 @@ label cody_confrontation:
 
     xavier "Excuse me, but we're all doing our best!"
 
-    zuri "Especially {i}little{/i} info you got us!"
+    zuri "Especially with what {i}little{/i} info you gave us!"
 
     "Boss" "I told you everything you needed to know!"
 
@@ -2410,8 +2584,6 @@ label cody_confrontation:
 
     "..."
 
-    zuri "{size=*0.5}And he calls {i}us{/i} incompetent..."
-
     show xavier thinking
 
     xavier "Do you know the name of that employee?"
@@ -2420,21 +2592,21 @@ label cody_confrontation:
 
     jump interrogation
 
-    scene bg city_day
+    # scene bg city_day
 
-    show cody neutral at middling
+    # show cody neutral at middling
 
-    c "Nadine? You okay?"
+    # c "Nadine? You okay?"
 
-    n uncertain street "Y-yeah, just a little nervous."
+    # n uncertain street "Y-yeah, just a little nervous."
 
-    show cody sympathetic with dissolve
+    # show cody sympathetic with dissolve
 
-    c "Don't be. It's not like you're introducing me to your parents."
+    # c "Don't be. It's not like you're introducing me to your parents."
 
-    n embarrassed "That's not funny."
+    # n embarrassed "That's not funny."
 
-    c "So...where is this guy?"
+    # c "So...where is this guy?"
 
     label interrogation:
 
@@ -2486,6 +2658,550 @@ label cody_confrontation:
         n uncertain "Used to work."
 
         yvette "Were you laid off or did you quit?"
+
+        n relief "I was fired."
+
+        show yvette sad 
+
+        yvette "I'm so sorry to hear that!"
+
+        zuri "Anyway! You must've been p*ssed off after they fired you, {i}right{/i}?"
+
+        n uncertain "...I was upset."
+
+        show zuri glasses
+
+        zuri "Upset enough for revenge?"
+
+        n "Excuse me?"
+
+        show xavier confident with dissolve
+
+        xavier "What my colleague is saying is that sometimes people can do...impulsive things in the face of reject-"
+
+        show xavier thinking
+
+        show yvette thinking
+
+        show zuri thinking
+
+        ami "Nadine? Who's at the door?"
+
+        "Oh, {i}great.{/i}"
+
+        n "Just some workers!"
+
+        ami "Oh, are they here to fix the radiator in the bathroom? Thank goodness!"
+
+        n "Wait-"
+
+        xavier "Ah, is there someone else who lives{nw}"
+
+        show xavier flustered
+
+        xavier "Ah, is there someone else who lives{fast}{cps=20} with...you...{/cps}"
+
+        hide yvette
+        hide zuri
+        with dissolve
+        
+        show amia smile casual at rightish with dissolve:
+            zoom 0.9
+
+        ami "Hi! The bathroom's in-"
+
+        show amia worried
+
+        ami "You're not plumbers, are you?"
+
+        show yvette confident uniform at leftish with dissolve
+
+        yvette "Nope! We're private investigators, XYZ! Yvette!"
+
+        xavier "..."
+
+        show yvette thinking with dissolve
+
+        yvette "Psst. X! That's your cue!"
+
+        xavier "What? Q? T-there's no Q in XYZ!"
+
+        show amia aww with dissolve
+
+        ami "Pfft!"
+
+        "And yet another man has fallen for Amia's charm."
+
+        yvette "X, there's a serious issue we need to-"
+
+        show yvette surprised 
+
+        mocha "Meow?"
+
+        "Right then, I feel Mocha rubbing against my knees."
+
+        n relief "Hi, Mocha-"
+
+        show yvette lovesick
+
+        show amia shocked
+
+        yvette "YOU HAVE A KITTY!!" with hpunch
+
+        n sad "He's actually 3 years old-"
+
+        show zuri annoyed uniform at farrightish with dissolve
+
+        yvette "Hi, kitty! Hi kitty! Kitty kitty!"
+
+        zuri "Oh {i}great{/i}."
+
+        "I need a diversion."
+
+        n "Amia, I think your rice might be burning!"
+
+        show amia worried with dissolve
+
+        ami "I didn't cook any rice-"
+
+        n customerservice "I {i}really{/i} think we should check on the rice!"
+
+        "Take the hint, already."
+
+        ami "...Oooookaaay?"
+
+        jump girlTalk
+
+    label girlTalk:
+
+        scene bg bedroom_day with fade
+
+        # show amia sleepy pajamas at middling with dissolve
+
+        # ami "I've had him since I was 10..."
+
+        show amia worried casual at middling with dissolve
+
+        ami "So that detective, the one with the sunglasses."
+
+        n sad street "Yeah?"
+
+        show amia aww
+
+        ami "He's a total hunk, right?"
+
+        menu is_xavier_hot:
+            n uncertain "Um..."
+            "For sure!":
+
+                $character3affection += 5
+
+                n embarrassed "I guess so..."
+
+                show amia winking 
+
+                ami "Oh, Nadine, you don't have to be embarassed!"
+
+                "She's being way too loud!"
+
+                n sad "He could hear us!"
+            "Not really.":
+                n "Not really."
+
+                ami "Aw, you're no fun!"
+
+
+        n "Anyways, we need to get them out of here."
+
+        show amia worried with dissolve
+
+        ami "Why are they even here, anyway? Did something happen?"
+
+        menu detective_reasons:
+            "Tell the truth":
+                n "You know Mellow Journeys, where I used to work? There was a robbery a few days ago."
+
+                show amia angry
+
+                ami "By the Shadow Angel?"
+
+                "How does she know that?"
+
+                n "Ye...n...I don't know."
+
+                ami "I can talk to them for you if you want."
+
+                n shocked "Don't!"
+
+                show amia worried 
+
+                ami "How come? Why do they want to talk to you?"
+
+                show amia angry
+                
+                ami "How come? Why do they want to talk to you?{fast} Unless..."
+
+                n "!!!!!!"
+
+                "No no no no no no no no no no..."
+
+                ami "...They think you were a witness.{nw}"
+
+                show amia worried 
+
+                ami "...They think you were a witness.{fast} But you were fired before, right?"
+
+                "{i}Phew.{/i}"
+
+                n customerservice "Yes! That's right!"
+
+                ami "Well, you should tell them that you weren't there!"
+
+                "Now that I think about it, Amia gave me an idea."
+
+                n "Actually, I think the rice could use some onions."
+
+                scene bg living_room with fade
+
+                show xavier thinking uniform at middling
+                show yvette lovesick uniform at leftish
+                show zuri annoyed uniform at rightish
+                with dissolve
+
+                yvette "Who's a good kitty? You are!"
+
+                zuri "Y, need I remind you that we are here on {i}business{/i}?"
+
+                show yvette surprised
+
+                n street "Um, excuse me."
+
+                show xavier flustered
+
+                xavier "Y-yes, miss...{nw}"
+
+                show xavier sad 
+                show yvette thinking
+
+                xavier "Y-yes, miss...{fast}ah, you're not...{nw}"
+
+                show xavier confident
+
+                xavier "Y-yes, miss...ah, you're not...{fast}well, then, Miss Bunker, about Mellow Journeys, there was a robbery recently."
+
+                "Time to put some acting skills to use."
+
+                n fakesurprise "{i}Oh, really?{/i}"
+
+                show yvette neutral with dissolve
+
+                yvette "Yes, at around 7:15pm. What time were you...laid off, exactly?"
+
+                n uncertain "I don't remember."
+
+                show zuri glasses
+
+                zuri "Was it before or after the robbery?"
+
+                n relief "...before."
+
+                zuri "Reaaaaly? So going back to how you felt when you got fired..."
+
+                n "Yes, I was angry. Yes, I felt vengeful."
+
+                n -relief "Yes, I was angry. Yes, I felt vengeful.{fast} But I didn't rob from the hotel."
+
+                "Specifically."
+
+                show xavier thinking with dissolve
+
+                xavier "But it does seem a bit suspicious about you getting fired minutes before a robbery."
+
+                n "...I saw someone arrive shortly after I left the hotel."
+
+                n "They asked me which way Mellow Journeys was, and I pointed it out."
+
+                show yvette thinking with dissolve
+
+                yvette "Interesting. What did they look like?"
+
+                n sad "I don't remember, I was too upset to notice."
+
+                "I cover my face and pretend to sniffle."
+
+                show yvette sad
+                show xavier sad
+                show zuri thinking
+
+                n crying "But the idea that I unwittingly helped someone commit such a horrible crime..."
+
+                zuri "Did you know this person might want to steal from the hotel?"
+
+                n relief "No."
+
+                xavier "Then we can all assure you, you did nothing wrong."
+
+                "Hook, line, and sinker."
+
+                n relief "Thank you."
+
+                yvette "Do you have any questions for us?"
+
+                n "No."
+
+                "The one with the sunglasses hands me a card."
+
+                xavier "If you have any other information for us, just call."
+
+                "With that, the detectives finally leave."
+
+                hide xavier
+                hide yvette
+                hide zuri
+                with dissolve
+
+                "{i}Phew.{/i}"
+
+                n "Hopefully they'll never come here again-"
+
+                show amia crying casual at middling with dissolve
+
+                n sad "Amia?"
+
+                "Before I can answer say anything else, she pulls me in for a hug."
+
+                ami "Aw, Nadine, I'm so, so sorry!"
+
+                n "Mmhm."
+
+                "Jeez, she's a lot stronger than she looks."
+         
+
+            "Lie":
+                n "I don't know."
+
+                ami "Well, we should go ask them!"
+
+                n "Wait-"
+
+                hide amia with dissolve
+
+                "And she's gone."
+
+                n "Amia, wait!"
+
+                scene bg living_room with fade
+
+
+                show xavier thinking uniform at middling
+                show yvette lovesick uniform at leftish
+                show zuri annoyed uniform at rightish
+                with dissolve
+
+                yvette "Who's a good kitty? You are!"
+
+                zuri "Y, need I remind you that we are here on {i}business{/i}?"
+
+                show amia casual worried at farleftish with dissolve:
+                    zoom 0.9
+
+                ami "Hello?"
+
+                n relief casual "Excuse me."
+
+                show xavier flustered 
+                show zuri thinking
+                with dissolve
+
+                xavier "U-uh, yes, Miss Bunker and, uh..."
+
+                ami "It's Amia."
+
+                xavier "Of course. About Mellow Journeys, there was a robbery recently..."
+
+                show amia angry 
+
+                ami "We're aware of that."
+
+                zuri "So if you don't mind, we were hoping to ask Miss Bunker some questions."
+
+                ami "Where's your warrant?"
+
+                show yvette thinking with dissolve
+
+                "The taller detectives (X and Z?) pull their warrants out. The shortest one has to be nudged to get hers."
+
+
+label mom:
+    scene bg apartment_outside_sunset with fade
+
+    show mama worried casual at middling with dissolve
+
+    "Mom" "Is everything alright, Nadine?"
+
+    n relief "Everything's fine, mom..."
+
+
+                
+
+    
+
+
+
+
+
+    #jump amia_love
+
+    
+    # scene bg cafe_evening with fade
+
+    # show cody sad winter at middling
+    # with dissolve
+
+
+    # c "Getting colder than usual, don't you think?"
+
+    # n "I need to buy winter clothes."
+
+    # scene bg apartment_outside_sunset with fade
+
+    # show amia shocked winter at middling with dissolve
+
+    # ami "Is the year over already?!"
+
+    # n sad winter "Yeah."
+
+    # show amia worried with dissolve
+
+    # ami "A lot of people have been acting weird, lately."
+
+    # n "Cody hasn't been returning my calls, either."
+
+    # ami "Oh, I've been wondering..."
+
+    # n "?"
+
+    # ami "Are you and Cody...together?"
+
+    # n shocked "What?"
+
+    # menu:
+    #     "No way":
+    #         n customerservice "No no no no!"
+
+    #         n deadpan "No no no no!{fast} No."
+
+    #         show amia aww with dissolve
+
+    #         ami "Oh, what a relief!"
+
+    #         show amia shocked
+
+    #         n -deadpan "Why do you ask?"
+
+    #         show amia embarrassed
+
+    #         ami "N-no reason!"
+
+    #         "She's blushing a lot for some reason..."
+    #     "Um...":
+    #         n embarrassed "We're not {i}together{/i} together, but..."
+
+    #         ami "He means a lot to you?"
+
+    #         n embarrassed "...Yeah."
+
+    #         show amia tired with dissolve
+
+    #         ami "Oh...okay..."
+
+    #         "She seems so sad."
+
+    # "Oh. I get it. She likes Cody."
+
+        
+
+
+
+    # label glasses:
+
+    #     scene bg hotel_hallway with fade
+
+    #     show zuri cantsee uniform at leftish with dissolve
+
+    #     zuri "Where are my glasses?! I can't see without them!"
+
+    #     show xavier cantbeseen uniform at rightish with dissolve
+
+    #     xavier "My glasses! I can't be seen without them!"
+
+    #     scene black with fade
+
+    #     centered "Six seconds later..."
+
+    #     scene bg hotel_hallway with fade
+
+    #     show zuri xaviersglasses uniform at leftish with dissolve
+
+    #     show xavier wrongglasses uniform at rightish with dissolve
+
+    #     "..."
+
+    # label amiaWork:
+        
+    #     scene bg cafe with fade
+
+    #     show amia smile uniform at middling with dissolve
+
+    #     ami "Welcome, welcome! How can I help you?"
+
+    #     show amia tired
+
+    #     ami "(I can't afford to quit now...)"
+            
+
+label dad:
+    scene bg apartment_outside_sunset with fade
+
+    show dad happy casual at middling with dissolve
+
+    "Dad" "Aren't you happy to see your old man?"
+
+    n relief "Sure, Dad..."
+
+
+label newsScoop:
+
+    scene bg city_day
+
+    "Okay, the coast is clear."
+
+    "???" "Excuse me~!"
+
+    n shocked street "Huh?"
+
+    show livia happy uniform at middling with moveinleft
+
+    liv "I'm Livia Porter from Daybreak News!"
+
+    show livia trouble uniform with dissolve:
+        zoom 0.6
+
+    liv "Could I ask you a few questions?"
+
+    
+
+
+
+
+        
+
+        
+
+
+
+
+
 
         
 

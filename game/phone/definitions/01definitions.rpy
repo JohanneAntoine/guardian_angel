@@ -45,12 +45,40 @@ label cody_text:
 
     jump cody_confrontation
 
-label phone_call_test:
-    phone call "s"
-    phone_s "Ohayouuu!!!!!!!!!!!!!!!!"
-    phone_mc "Hey!"
-    "Why is she always this energetic?"
-    phone end call
-    "..."
 
-    return
+label cody_wingman:
+    phone discussion "ddu":
+        time year 2023 month 7 day 5 hour 16 minute 30 delay -1 
+
+        "n" "Someone just told me they have a crush on me."
+
+        "c" ":O"
+
+        "c" "Who??"
+
+        "n" "You don't know them."
+
+        "n" "What do I do????"
+
+        "c" "Do you like them back?"
+
+        "n" "I don't know."
+
+        "c" "How do you feel about them?"
+
+    phone end discussion
+
+    jump love_epiphany
+
+
+
+
+# label phone_call_test:
+#     phone call "s"
+#     phone_s "Ohayouuu!!!!!!!!!!!!!!!!"
+#     phone_mc "Hey!"
+#     "Why is she always this energetic?"
+#     phone end call
+#     "..."
+
+#     return

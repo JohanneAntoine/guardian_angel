@@ -311,6 +311,8 @@ screen navigation():
 
         textbutton _("Load") action ShowMenu("load")
 
+        textbutton _("Gallery") action ShowMenu("gallery")
+
         textbutton _("Preferences") action ShowMenu("preferences")
 
         if _in_replay:
@@ -1513,3 +1515,10 @@ style slider_vbox:
 style slider_slider:
     variant "small"
     xsize 600
+
+
+
+## My screens
+
+screen smoke_bomb():
+    add "smokebomb"
